@@ -142,10 +142,9 @@ def spr_sidebar():
         st.info('**Music Recommendation**')
         home_button = st.button("About Us")
         rec_button = st.button('Recommendation Engine')
-        random_recom = st.button("Recommend Randomly")
+        random_recom = st.button("Personalized Recommendation")
         
         
-        st.success('By Batch-14')
         st.session_state.log_holder = st.empty()
         if home_button:
             st.session_state.app_mode = 'home'
@@ -165,8 +164,7 @@ def spr_sidebar():
     
 
 
-# Load Data and n_neighbors_uri_audio are helper functions inside Recommendation Page
-# Loads the track from filtered_track_df.csv file
+
 def load_data():
     df = pd.read_csv(
         "filtered_track_df.csv")
@@ -188,7 +186,6 @@ genre_names = ['Dance Pop', 'Electronic', 'Electropop', 'Hip Hop',
 audio_feats = ["acousticness", "danceability",
                "energy", "instrumentalness", "valence", "tempo"]
 
-# Fetches the Nearest Song according to Genre start_year and end year.
 def n_neighbors_uri_audio(genre, start_year, end_year, test_feat):
     genre = genre.lower()
     genre_data = exploded_track_df[(exploded_track_df["genres"] == genre) & (
@@ -206,7 +203,6 @@ def n_neighbors_uri_audio(genre, start_year, end_year, test_feat):
     return uris, audios
 
 
-# Recommendation Page
 
 def rec_page():
     
@@ -311,16 +307,13 @@ def rec_page():
 
     else:
         st.write("No songs left to recommend")
-
-    st.code("Algorithms that I have used in this filtering are the k-nearest neighbours and Random Forest")       
-
     
 
     
 
 
 def home_page():
-    st.subheader('About Me')
+    st.subheader('')
     
     
     col1, col2 = st.columns(2)
@@ -408,7 +401,6 @@ def rand_rec():
         except:
             pass
     df_fav = pd.DataFrame(fav_tracks, columns = ['track_id', 'name', 'album', 'artist', 'release_date', 'length', 'popularity', 'danceability', 'acousticness', 'energy', 'instrumentalness', 'liveness', 'loudness', 'speechiness', 'tempo', 'time_signature'])
-    st.write(df_fav.head())
     df_fav = df_fav.drop(columns=['name', 'album', 'artist', 'release_date'])
     df_fav['favorite'] = 1
     df['favorite'] = 0 
@@ -436,7 +428,6 @@ def rand_rec():
     y = train_set.favorite
 
 
-    st.write(X)
 
     from imblearn.over_sampling import RandomOverSampler
 
@@ -477,7 +468,6 @@ def rand_rec():
     pipe.fit(X_train, y_train)  # apply scaling on training data
     Pipeline(steps=[('standardscaler', StandardScaler()),
                     ('dt', DecisionTreeClassifier(max_depth=30))])
-    st.write(pipe.score(X_test, y_test)*100)
 
 
     df = pd.read_csv('C:\\Users\\Naga Sai\\Desktop\\yaswant-main\\project\\data\\encoded_playlist_songs.csv')
